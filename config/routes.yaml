@@ -1,0 +1,7 @@
+index:
+    path: /
+    controller: App\Controller\CoffeeHouseController::index
+
+coffee_house:
+  path: /api/coffeeHouse
+  controller: App\Controller\CoffeeHouseController::coffeeHouse
