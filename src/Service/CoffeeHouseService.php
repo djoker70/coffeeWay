@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\DBAL\Types\Geolocation\Point;
 use App\Entity\CoffeeHouse;
 use App\Model\CoffeeHouseListItem;
 use App\Model\CoffeeHousesList;
@@ -23,5 +24,13 @@ class CoffeeHouseService
                 $coffeeHouse->getCoordinates()
             ), $coffeeHouses);
         return new CoffeeHousesList($items);
+    }
+
+    public function getCoffeeHousesInRadiusPointList(Point $point)
+    {
+        $radius = 0.01; //near 1 meter in degrees.
+        $coffeeHouses = $this->coffeeHouseRepository->getCoffeeHousesInRadiusPointList($point, $radius);
+        var_dump($coffeeHouses);
+        return '123';
     }
 }
