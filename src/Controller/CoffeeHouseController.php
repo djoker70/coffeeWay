@@ -24,7 +24,7 @@ class CoffeeHouseController extends AbstractController
     #[Route(path: '/api/coffeeHouse', name: 'coffee_house', methods: ['GET'])]
     public function coffeeHouse(): Response
     {
-        $coffeeHouses = $this->coffeeHouseService->getAllCoffeeHouses();
-        return $this->json($coffeeHouses);
+        $coffeeHousesList = $this->coffeeHouseService->getAllCoffeeHousesList();
+        return $this->json($coffeeHousesList);
     }
 }

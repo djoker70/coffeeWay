@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\CoffeeHouse;
 use App\Model\CoffeeHouseListItem;
-use App\Model\CoffeeHousesListResponse;
+use App\Model\CoffeeHousesList;
 use App\Repository\CoffeeHouseRepository;
 
 class CoffeeHouseService
@@ -13,14 +13,15 @@ class CoffeeHouseService
     {
     }
 
-    public function getAllCoffeeHouses(): CoffeeHousesListResponse
+    public function getAllCoffeeHousesList(): CoffeeHousesList
     {
         $coffeeHouses = $this->coffeeHouseRepository->findAll();
         $items = array_map(
             fn (CoffeeHouse $coffeeHouse) => new CoffeeHouseListItem(
                 $coffeeHouse->getId(),
-                $coffeeHouse->getName()
+                $coffeeHouse->getName(),
+                $coffeeHouse->getCoordinates()
             ), $coffeeHouses);
-        return new CoffeeHousesListResponse($items);
+        return new CoffeeHousesList($items);
     }
 }

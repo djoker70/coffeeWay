@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class CoffeeHousesListResponse
+class CoffeeHousesList
 {
     /**
      * @var CoffeeHouseListItem[]
