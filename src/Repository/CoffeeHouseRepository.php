@@ -5,8 +5,6 @@ namespace App\Repository;
 use App\DBAL\Types\Geolocation\Point;
 use App\Entity\CoffeeHouse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -45,38 +43,13 @@ class CoffeeHouseRepository extends ServiceEntityRepository
         $rsm->addFieldResult('ch', 'name', 'name');
         $rsm->addFieldResult('ch', 'coordinates', 'coordinates');
 
-        $query = $this->getEntityManager()->createNativeQuery(
-            'SELECT
+        $sql = "SELECT
                     ch.id,
                     ch.name,
                     ch.coordinates
                 FROM coffee_house ch
-                WHERE ch.coordinates <@ circle (?, ?), ?', $rsm
-        );
-        $query->setParameters(new ArrayCollection([
-            new Parameter('1', $lon),
-            new Parameter('2', $lat),
-            new Parameter('3', $radiusInDegrees),
-        ]));
-        /*$qb->select('ch')
-            ->from('App\Entity\CoffeeHouse', 'ch')
-            ->where('ch.coordinates <@ circle (?1, ?2), ?3')
-        ->setParameters(new ArrayCollection([
-            new Parameter('1', $lon),
-            new Parameter('2', $lat),
-            new Parameter('3', $radiusInDegrees),
-        ]));
-        $query = $qb->getQuery();*/
-        /*$query = $this->getEntityManager()->createQuery(
-            'SELECT
-                    ch
-                FROM App\Entity\CoffeeHouse ch
-                WHERE ch.coordinates <@ circle (:lon, :lat), :rad'
-        )->setParameters(
-            ['lon' => $lon,
-             'lat' => $lat,
-             'rad' => $radiusInDegrees, ]
-        );*/
+                WHERE ch.coordinates <@ circle '(($lon,$lat), $radiusInDegrees)'";
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 
         return $query->getResult();
     }

@@ -30,7 +30,12 @@ class CoffeeHouseService
     {
         $radius = 0.01; //near 1 meter in degrees.
         $coffeeHouses = $this->coffeeHouseRepository->getCoffeeHousesInRadiusPointList($point, $radius);
-        var_dump($coffeeHouses);
-        return '123';
+        $items = array_map(
+            fn (CoffeeHouse $coffeeHouse) => new CoffeeHouseListItem(
+                $coffeeHouse->getId(),
+                $coffeeHouse->getName(),
+                $coffeeHouse->getCoordinates()
+            ), $coffeeHouses);
+        return new CoffeeHousesList($items);
     }
 }
